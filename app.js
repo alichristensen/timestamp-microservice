@@ -21,7 +21,7 @@ app.get('/:date', function(req, res){
 });
 
 function unixToDate(UNIX_timestamp) {
-	var date = new Date();
+	var date = new Date(UNIX_timestamp);
 	return (moment(date).format("MMMM Do, YYYY"));
 }
 
