@@ -1,6 +1,7 @@
 var express = require('express'), 
 	app 	= express(), 
-	moment  = require('moment');
+	moment  = require('moment'), 
+	port = process.env.PORT || 5000;
 
 app.set("view engine", "ejs");
 
@@ -30,6 +31,6 @@ function dateToUnix(str) {
 	return (moment(new Date(date)).unix());
 }
 
-app.listen(3000, function(){
-	console.log("server is running");
+app.listen(port, function(){
+	console.log("listening at " + port);
 });
