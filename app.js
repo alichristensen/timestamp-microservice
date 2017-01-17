@@ -9,25 +9,24 @@ app.get('/', function(req, res){
 });
 
 app.get('/:date', function(req, res){
-	var date; 
-	var reg = new RegExp('^[0-9]+$');
-	if (reg.test(req.params.date)) {
-		date = unixToDate(Number(req.params.date));
-		res.render("new", {natural: date, unix: req.params.date});
+	var reg1 = new RegExp('^[0-9]+$');
+	var reg2 = new RegExp('[^0-9]+[0-9]{4}');
+	if (reg1.test(req.params.date)) {
+		res.render("new", {natural: unixToDate(Number(req.params.date)), unix: req.params.date});
+	} else if (reg2.test(req.params.date)) {
+		res.render("new", {unix: dateToUnix(req.params.date), natural: req.params.date}); 
 	} else {
-		date = dateToUnix(req.params.date);
-		res.render("new", {unix: date, natural: req.params.date}); 
+		res.render("new", {unix: "null", natural: "null"});
 	}
 });
 
-function unixToDate(UNIX_timestamp) {
-	var date = new Date(UNIX_timestamp);
+function unixToDate(unix) {
+	var date = new Date(unix*1000);
 	return (moment(date).format("MMMM Do, YYYY"));
 }
 
 function dateToUnix(str) {
-	var date = str; 
-	console.log(moment(new Date(date)).inspect());
+	var date = str;
 	return (moment(new Date(date)).unix());
 }
 
