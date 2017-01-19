@@ -25,7 +25,11 @@ app.get('/:date', function(req, res){
 	if (reg1.test(req.params.date)) {
 		res.render("new", {natural: unixToDate(Number(req.params.date)), unix: req.params.date});
 	} else if (reg2.test(req.params.date) && isMonth) {
-		res.render("new", {unix: dateToUnix(req.params.date), natural: req.params.date}); 
+		if (dateToUnix(req.params.date) !== null) {
+			res.render("new", {unix: dateToUnix(req.params.date), natural: req.params.date});
+		} else {
+			res.render("new", {unix: "null", natural: "null"});
+		}
 	} else {
 		res.render("new", {unix: "null", natural: "null"});
 	}
@@ -37,8 +41,12 @@ function unixToDate(unix) {
 }
 
 function dateToUnix(str) {
-	var date = str;
-	return (moment(new Date(date)).unix());
+	console.log(moment(new Date(str)).isValid());
+	if (moment(new Date(str)).isValid()) {
+		return (moment(new Date(str)).unix());
+	} else {
+		return null;
+	}
 }
 
 app.listen(port, function(){
